@@ -145,7 +145,9 @@ ORDER BY COUNT(od.user_id) DESC
 limit 1;
 
 ---Tìm người dùng không hoạt động trong hệ thống
-SELECT * FROM user_user
-WHERE NOT EXISTS (SELECT user_id FROM like_res WHERE like_res.user_id = user_user.user_id)
-SELECT * FROM user_user
-WHERE NOT EXISTS (SELECT user_id FROM rate_res WHERE rate_res.user_id = user_user.user_id)
+SELECT * FROM user_user as u
+LEFT JOIN order_order as o ON o.user_id = u.user_id
+LEFT JOIN like_res as lr ON lr.user_id = u.user_id
+LEFT JOIN rate_res as rr ON rr.user_id = u.user_id
+WHERE o.user_id IS NULL && lr.user_id IS NULL && rr.user_id IS NULL
+
